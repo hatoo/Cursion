@@ -35,6 +35,10 @@ impl Decorations {
         self.0.insert(decoration);
         self
     }
+
+    pub fn insert(&mut self, decoration: Decoration) {
+        self.0.insert(decoration);
+    }
 }
 
 impl fmt::Display for Decorations {
