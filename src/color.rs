@@ -24,6 +24,12 @@ pub enum TermColor {
     Yellow,
 }
 
+impl Default for TermColor {
+    fn default() -> Self {
+        TermColor::Reset
+    }
+}
+
 impl termion::color::Color for TermColor {
     fn write_fg(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
