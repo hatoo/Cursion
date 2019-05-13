@@ -8,3 +8,4 @@ mod tests {
 
 pub mod color;
 pub mod decoration;
+pub mod style;
