@@ -27,7 +27,7 @@ impl fmt::Display for Decoration {
     }
 }
 
-#[derive(Debug, Eq, PartialEq, Default)]
+#[derive(Debug, Eq, PartialEq, Default, Clone)]
 pub struct Decorations(BTreeSet<Decoration>);
 
 impl Decorations {
