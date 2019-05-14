@@ -1,5 +1,6 @@
 use crate::cursor::Cursor;
 use crate::style::Style;
+use std::fmt;
 use unicode_width::UnicodeWidthChar;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
@@ -20,6 +21,13 @@ pub struct Term {
 pub enum Error {
     NotEnoughSpace,
 }
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        "Not enough space to set".fmt(f)
+    }
+}
+impl std::error::Error for Error {}
 
 impl Term {
     pub fn new(height: usize, width: usize) -> Self {
