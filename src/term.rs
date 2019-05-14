@@ -30,7 +30,7 @@ impl Term {
         }
     }
 
-    pub fn put_char_at(
+    pub fn set_char_at(
         &mut self,
         row: usize,
         col: usize,
