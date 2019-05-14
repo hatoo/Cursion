@@ -2,7 +2,7 @@ use crate::cursor::Cursor;
 use crate::style::Style;
 use unicode_width::UnicodeWidthChar;
 
-#[derive(Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum Tile {
     Empty,
     Occupied,
@@ -16,6 +16,7 @@ pub struct Term {
     pub cursor: Option<Cursor>,
 }
 
+#[derive(Debug)]
 pub enum Error {
     NotEnoughSpace,
 }
@@ -75,4 +76,59 @@ impl Term {
         }
         Ok(())
     }
+}
+
+#[test]
+fn test_set_char_at() {
+    let mut t = Term::new(1, 4);
+    t.set_char_at(0, 0, 'あ', Style::default()).unwrap();
+    assert_eq!(
+        t.buf,
+        vec![vec![
+            Tile::Char('あ', Style::default()),
+            Tile::Occupied,
+            Tile::Empty,
+            Tile::Empty
+        ]]
+    );
+    t.set_char_at(0, 1, 'い', Style::default()).unwrap();
+    assert_eq!(
+        t.buf,
+        vec![vec![
+            Tile::Empty,
+            Tile::Char('い', Style::default()),
+            Tile::Occupied,
+            Tile::Empty
+        ]]
+    );
+    t.set_char_at(0, 0, 'う', Style::default()).unwrap();
+    assert_eq!(
+        t.buf,
+        vec![vec![
+            Tile::Char('う', Style::default()),
+            Tile::Occupied,
+            Tile::Empty,
+            Tile::Empty
+        ]]
+    );
+    t.set_char_at(0, 2, 'a', Style::default()).unwrap();
+    assert_eq!(
+        t.buf,
+        vec![vec![
+            Tile::Char('う', Style::default()),
+            Tile::Occupied,
+            Tile::Char('a', Style::default()),
+            Tile::Empty
+        ]]
+    );
+    t.set_char_at(0, 1, 'b', Style::default()).unwrap();
+    assert_eq!(
+        t.buf,
+        vec![vec![
+            Tile::Empty,
+            Tile::Char('b', Style::default()),
+            Tile::Char('a', Style::default()),
+            Tile::Empty
+        ]]
+    );
 }
