@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 termion = "1"
 enumset = "0.4"
+unicode-width = "0.1"

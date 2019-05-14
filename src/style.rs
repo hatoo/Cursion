@@ -30,7 +30,7 @@ impl fmt::Display for DiffStyle {
         }
 
         if self.from.bg != self.to.bg {
-            &termion::color::Bg(self.to.bg).fmt(f)?;
+            termion::color::Bg(self.to.bg).fmt(f)?;
         }
 
         if self.from.decorations != self.to.decorations {
