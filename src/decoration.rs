@@ -1,8 +1,8 @@
-use std::collections::btree_set::BTreeSet;
+use enumset::{EnumSet, EnumSetType};
 use std::fmt;
 use termion::style;
 
-#[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Clone, Copy)]
+#[derive(Debug, EnumSetType)]
 pub enum Decoration {
     Blink,
     Bold,
@@ -27,8 +27,8 @@ impl fmt::Display for Decoration {
     }
 }
 
-#[derive(Debug, Eq, PartialEq, Default, Clone)]
-pub struct Decorations(BTreeSet<Decoration>);
+#[derive(Debug, Eq, PartialEq, Default, Clone, Copy)]
+pub struct Decorations(EnumSet<Decoration>);
 
 impl Decorations {
     pub fn with(mut self, decoration: Decoration) -> Self {
@@ -43,7 +43,7 @@ impl Decorations {
 
 impl fmt::Display for Decorations {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for d in &self.0 {
+        for d in self.0.iter() {
             d.fmt(f)?;
         }
         Ok(())

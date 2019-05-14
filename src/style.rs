@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug, Eq, PartialEq, Clone, Default)]
+#[derive(Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct Style {
     pub fg: crate::color::TermColor,
     pub bg: crate::color::TermColor,
@@ -8,9 +8,9 @@ pub struct Style {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-pub struct DiffStyle<'a, 'b> {
-    pub from: &'a Style,
-    pub to: &'b Style,
+pub struct DiffStyle {
+    pub from: Style,
+    pub to: Style,
 }
 
 impl fmt::Display for Style {
@@ -23,7 +23,7 @@ impl fmt::Display for Style {
     }
 }
 
-impl<'a, 'b> fmt::Display for DiffStyle<'a, 'b> {
+impl fmt::Display for DiffStyle {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if self.from.fg != self.to.fg {
             termion::color::Fg(self.to.fg).fmt(f)?;
