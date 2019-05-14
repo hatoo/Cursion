@@ -11,6 +11,13 @@ pub enum CursorShape {
     SteadyBar,
 }
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub struct Cursor {
+    pub row: usize,
+    pub col: usize,
+    pub shape: CursorShape,
+}
+
 impl fmt::Display for CursorShape {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
@@ -22,5 +29,11 @@ impl fmt::Display for CursorShape {
             CursorShape::BlinkingBar => "\x1b[\x35 q".fmt(f),
             CursorShape::SteadyBar => "\x1b[\x36 q".fmt(f),
         }
+    }
+}
+
+impl Default for CursorShape {
+    fn default() -> Self {
+        CursorShape::Default
     }
 }
