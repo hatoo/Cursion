@@ -109,6 +109,7 @@ impl<'a> TermWriter<'a> {
 
     pub fn newline(&mut self) {
         self.row += 1;
+        self.col = 0;
     }
 
     pub fn cause_newline(&self, ch: char) -> bool {
