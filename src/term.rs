@@ -238,4 +238,22 @@ fn test_term_writer() {
             ]
         ]
     );
+    let mut t = Term::new(2, 3);
+    {
+        let mut w = TermWriter::new(&mut t);
+        assert_eq!(w.write('a', Style::default()), Some((0, 0)));
+        w.newline();
+        assert_eq!(w.write('あ', Style::default()), Some((1, 0)));
+    }
+    assert_eq!(
+        t.buf,
+        vec![
+            vec![Tile::Char('a', Style::default()), Tile::Empty, Tile::Empty,],
+            vec![
+                Tile::Char('あ', Style::default()),
+                Tile::Occupied,
+                Tile::Empty,
+            ]
+        ]
+    );
 }
