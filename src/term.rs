@@ -41,6 +41,10 @@ impl Term {
         }
     }
 
+    pub fn with_terminal_size() -> io::Result<Self> {
+        termion::terminal_size().map(|(col, row)| Self::new(row as usize, col as usize))
+    }
+
     pub fn set_char_at(
         &mut self,
         row: usize,
