@@ -1,6 +1,7 @@
 use crate::cursor::Cursor;
-use crate::style::Style;
+use crate::style::{DiffStyle, Style};
 use std::fmt;
+use std::io;
 use unicode_width::UnicodeWidthChar;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
@@ -81,6 +82,61 @@ impl Term {
             self.buf[row][col] = Tile::Char(ch, style);
             for i in col + 1..col + w {
                 self.buf[row][i] = Tile::Occupied;
+            }
+        }
+        Ok(())
+    }
+
+    pub fn draw<T: io::Write>(&self, w: &mut T) -> io::Result<()> {
+        let mut current_style = Style::default();
+        write!(
+            w,
+            "{}{}{}",
+            // 1-indexed
+            termion::cursor::Goto(1, 1),
+            current_style,
+            termion::clear::All
+        )?;
+
+        for (current_row, line) in self.buf.iter().enumerate() {
+            let mut current_col = 0;
+            for (col, t) in line.iter().enumerate() {
+                match t {
+                    Tile::Char(ch, style) => {
+                        if current_col != col {
+                            current_col = col;
+                            write!(
+                                w,
+                                "{}",
+                                termion::cursor::Goto(
+                                    current_col as u16 + 1,
+                                    current_row as u16 + 1
+                                )
+                            )?;
+                        }
+                        if current_style != *style {
+                            write!(
+                                w,
+                                "{}",
+                                DiffStyle {
+                                    from: current_style,
+                                    to: *style
+                                }
+                            )?;
+                            current_style = *style;
+                        }
+                        write!(w, "{}", ch)?;
+                        current_col += 1;
+                    }
+                    Tile::Occupied => {
+                        current_col += 1;
+                    }
+                    Tile::Empty => {}
+                }
+            }
+            // Do not print newline in the last line.
+            if current_row + 1 < self.height {
+                write!(w, "\r\n")?;
             }
         }
         Ok(())
