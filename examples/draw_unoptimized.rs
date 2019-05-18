@@ -14,14 +14,14 @@ fn main() {
         let mut cursor = None;
         {
             let mut w = TermWriter::new(&mut t);
-            for j in 0..120 {
-                if j % 20 == 0 {
+            for j in 0..800 {
+                if j % 40 == 0 {
                     w.newline();
                 }
                 if i == j {
                     cursor = w.write('b', Style::default());
                 } else {
-                    w.write('a', Style::default()).unwrap();
+                    w.write('a', Style::default());
                 }
             }
         }
