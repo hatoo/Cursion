@@ -1,6 +1,6 @@
 use cursion::double_buffer::DoubleBuffer;
 use cursion::style::Style;
-use cursion::term::{Term, TermWriter};
+use cursion::term::TermWriter;
 use std::io::{stdout, Write};
 use std::thread;
 use std::time;
@@ -14,7 +14,7 @@ fn main() {
         let mut cursor = None;
         {
             let mut w = TermWriter::new(&mut double_buffer.back);
-            w.write_str("You may notice flickering", Style::default());
+            w.write_str("You don't notice flickering", Style::default());
             w.newline();
             for j in 0..800 {
                 if j % 40 == 0 {
