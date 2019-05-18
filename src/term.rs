@@ -228,6 +228,14 @@ impl<'a> TermWriter<'a> {
 
         Some(res)
     }
+
+    pub fn write_str(&mut self, s: &str, style: Style) {
+        for ch in s.chars() {
+            if self.write(ch, style).is_none() {
+                return;
+            }
+        }
+    }
 }
 
 #[test]

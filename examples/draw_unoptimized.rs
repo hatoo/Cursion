@@ -9,11 +9,13 @@ use termion::raw::IntoRawMode;
 fn main() {
     let mut stdout = MouseTerminal::from(stdout()).into_raw_mode().unwrap();
 
-    for i in 0..120 {
+    for i in 0..240 {
         let mut t = Term::with_terminal_size().unwrap();
         let mut cursor = None;
         {
             let mut w = TermWriter::new(&mut t);
+            w.write_str("You may notice flickering", Style::default());
+            w.newline();
             for j in 0..800 {
                 if j % 40 == 0 {
                     w.newline();
@@ -28,7 +30,7 @@ fn main() {
         t.cursor = cursor.map(|(row, col)| cursion::cursor::Cursor {
             row,
             col,
-            shape: cursion::cursor::CursorShape::SteadyUnderline,
+            shape: Default::default(),
         });
         t.draw(&mut stdout).unwrap();
         stdout.flush().unwrap();
