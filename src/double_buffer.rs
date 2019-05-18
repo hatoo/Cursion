@@ -28,6 +28,7 @@ impl DoubleBuffer {
         if (self.front.height(), self.front.width()) != (self.back.height(), self.back.width()) {
             self.back.draw(out)?;
         } else {
+            write!(out, "{}", termion::cursor::Hide)?;
             let mut current_style = Style::default();
             write!(out, "{}", current_style)?;
 
