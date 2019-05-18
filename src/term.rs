@@ -5,13 +5,13 @@ use std::io;
 use unicode_width::UnicodeWidthChar;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum Tile {
+pub enum Tile {
     Empty,
     Occupied,
     Char(char, Style),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Term {
     height: usize,
     width: usize,
@@ -43,6 +43,29 @@ impl Term {
 
     pub fn with_terminal_size() -> io::Result<Self> {
         termion::terminal_size().map(|(col, row)| Self::new(row as usize, col as usize))
+    }
+
+    pub fn height(&self) -> usize {
+        self.height
+    }
+
+    pub fn width(&self) -> usize {
+        self.width
+    }
+
+    pub fn buf(&self) -> &[Vec<Tile>] {
+        &self.buf
+    }
+
+    pub fn clear(&mut self) {
+        self.buf = vec![vec![Tile::Empty; self.width]; self.height];
+        self.cursor = None;
+    }
+
+    pub fn clear_with_terminal_size(&mut self) -> io::Result<()> {
+        let (col, row) = termion::terminal_size()?;
+        *self = Self::new(row as usize, col as usize);
+        Ok(())
     }
 
     pub fn set_char_at(
