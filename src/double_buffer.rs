@@ -76,12 +76,11 @@ impl DoubleBuffer {
                             }
                             write!(
                                 out,
-                                "{}{}",
+                                "{} ",
                                 DiffStyle {
                                     from: current_style,
                                     to: Style::default()
                                 },
-                                ' '
                             )?;
 
                             current_style = Style::default();
