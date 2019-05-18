@@ -143,6 +143,18 @@ impl Term {
                 write!(w, "\r\n")?;
             }
         }
+
+        if let Some(ref cursor) = self.cursor {
+            write!(
+                w,
+                "{}{}{}",
+                termion::cursor::Goto(cursor.col as u16 + 1, cursor.row as u16 + 1),
+                cursor.shape,
+                termion::cursor::Show,
+            )?;
+        } else {
+            write!(w, "{}", termion::cursor::Hide)?;
+        }
         Ok(())
     }
 }

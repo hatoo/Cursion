@@ -11,16 +11,25 @@ fn main() {
 
     for i in 0..120 {
         let mut t = Term::with_terminal_size().unwrap();
+        let mut cursor = None;
         {
             let mut w = TermWriter::new(&mut t);
             for j in 0..120 {
-                if j % 25 == 0 {
+                if j % 20 == 0 {
                     w.newline();
                 }
-                w.write(if i == j { 'a' } else { 'b' }, Style::default())
-                    .unwrap();
+                if i == j {
+                    cursor = w.write('b', Style::default());
+                } else {
+                    w.write('a', Style::default()).unwrap();
+                }
             }
         }
+        t.cursor = cursor.map(|(row, col)| cursion::cursor::Cursor {
+            row,
+            col,
+            shape: cursion::cursor::CursorShape::SteadyUnderline,
+        });
         t.draw(&mut stdout).unwrap();
         stdout.flush().unwrap();
         thread::sleep(time::Duration::from_secs(1) / 120);
