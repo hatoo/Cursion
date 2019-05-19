@@ -1,20 +1,33 @@
+//! Cursor management
 use std::fmt;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
+/// Cursor shapes
 pub enum CursorShape {
+    /// Default
     Default,
+    /// Blinking box
     BlinkingBlock,
+    /// Steady box
     SteadyBlock,
+    /// Blinking underline
     BlinkingUnderline,
+    /// Steady underline
     SteadyUnderline,
+    /// Blinking bar
     BlinkingBar,
+    /// Steady bar
     SteadyBar,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
+/// Cursor state
 pub struct Cursor {
+    /// 0-indexed row
     pub row: usize,
+    /// 0-indexed column
     pub col: usize,
+    /// A shape for cursor
     pub shape: CursorShape,
 }
 

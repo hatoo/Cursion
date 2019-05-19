@@ -1,15 +1,25 @@
+//! Character decoration
+
 use enumset::{EnumSet, EnumSetType};
 use std::fmt;
 use termion::style;
 
 #[derive(Debug, EnumSetType)]
+/// Character decoration
 pub enum Decoration {
+    /// Blinking text (not widely supported)
     Blink,
+    /// Bold text
     Bold,
+    /// Fainted text (not widely supported)
     Faint,
+    /// Framed text (not widely supported)
     Framed,
+    /// Inverted colors (negative mode)
     Invert,
+    /// Italic text
     Italic,
+    /// Underlined text
     Underline,
 }
 
@@ -28,14 +38,17 @@ impl fmt::Display for Decoration {
 }
 
 #[derive(Debug, Eq, PartialEq, Default, Clone, Copy)]
+/// Set of character decorations
 pub struct Decorations(EnumSet<Decoration>);
 
 impl Decorations {
+    /// With a Decoration
     pub fn with(mut self, decoration: Decoration) -> Self {
         self.0.insert(decoration);
         self
     }
 
+    /// insert a Decoration
     pub fn insert(&mut self, decoration: Decoration) {
         self.0.insert(decoration);
     }

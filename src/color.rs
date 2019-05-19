@@ -1,26 +1,47 @@
+//! Color management
 use std::fmt;
 use termion::color;
 
+/// Colors in terminal
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
 pub enum TermColor {
+    /// An arbitrary ANSI color value.
     AnsiValue(u8),
+    /// Black
     Black,
+    /// Blue
     Blue,
+    /// Cyan
     Cyan,
+    /// Green
     Green,
+    /// High-intensity light black
     LightBlack,
+    /// High-intensity light blue
     LightBlue,
+    /// High-intensity light cyan
     LightCyan,
+    /// High-intensity light green
     LightGreen,
+    /// High-intensity light magenta
     LightMagenta,
+    /// High-intensity light red
     LightRed,
+    /// High-intensity light white
     LightWhite,
+    /// High-intensity light yellow
     LightYellow,
+    /// Magenta
     Magenta,
+    /// Red
     Red,
+    /// Reset color
     Reset,
+    /// A truecolor RGB.
     Rgb(u8, u8, u8),
+    /// White
     White,
+    /// Yellow
     Yellow,
 }
 

@@ -1,15 +1,24 @@
+//! Style in terminal
+
 use std::fmt;
 
+/// A Style
 #[derive(Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct Style {
+    /// Foreground color
     pub fg: crate::color::TermColor,
+    /// Background color
     pub bg: crate::color::TermColor,
+    /// Decorations
     pub decorations: crate::decoration::Decorations,
 }
 
+/// Previous and next Style
 #[derive(Debug, Eq, PartialEq)]
 pub struct DiffStyle {
+    /// from
     pub from: Style,
+    /// to
     pub to: Style,
 }
 

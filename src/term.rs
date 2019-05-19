@@ -1,3 +1,5 @@
+//! Terminal draw state
+
 use crate::cursor::Cursor;
 use crate::style::{DiffStyle, Style};
 use std::fmt;
@@ -11,16 +13,20 @@ pub(crate) enum Tile {
     Char(char, Style),
 }
 
+/// Terminal buffer
 #[derive(Debug, Clone)]
 pub struct Term {
     height: usize,
     width: usize,
     buf: Vec<Vec<Tile>>,
+    /// Cursor state
     pub cursor: Option<Cursor>,
 }
 
 #[derive(Debug)]
+/// Error type for drawing char in term
 pub enum Error {
+    /// Width of the Character is greater than terminal width
     NotEnoughSpace,
 }
 
@@ -32,6 +38,7 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 impl Term {
+    /// Create Term with given height and width
     pub fn new(height: usize, width: usize) -> Self {
         Self {
             height,
@@ -41,14 +48,17 @@ impl Term {
         }
     }
 
+    /// Create Term with current terminal size
     pub fn with_terminal_size() -> io::Result<Self> {
         termion::terminal_size().map(|(col, row)| Self::new(row as usize, col as usize))
     }
 
+    /// Get height
     pub fn height(&self) -> usize {
         self.height
     }
 
+    /// Get width
     pub fn width(&self) -> usize {
         self.width
     }
@@ -57,17 +67,20 @@ impl Term {
         &self.buf
     }
 
+    /// Clear buffer
     pub fn clear(&mut self) {
         self.buf = vec![vec![Tile::Empty; self.width]; self.height];
         self.cursor = None;
     }
 
+    /// Clear self for current terminal size
     pub fn clear_with_terminal_size(&mut self) -> io::Result<()> {
         let (col, row) = termion::terminal_size()?;
         *self = Self::new(row as usize, col as usize);
         Ok(())
     }
 
+    /// Set a character at given row and col
     pub fn set_char_at(
         &mut self,
         row: usize,
@@ -114,6 +127,8 @@ impl Term {
         Ok(())
     }
 
+    /// Draw a buffer.
+    /// w is typically stdout
     pub fn draw<T: io::Write>(&self, w: &mut T) -> io::Result<()> {
         let mut current_style = Style::default();
         write!(
@@ -183,13 +198,18 @@ impl Term {
 }
 
 #[derive(Debug)]
+/// Tracking coordinates internally
 pub struct TermWriter<'a> {
-    term: &'a mut Term,
-    row: usize,
-    col: usize,
+    /// Term
+    pub term: &'a mut Term,
+    /// row
+    pub row: usize,
+    /// col
+    pub col: usize,
 }
 
 impl<'a> TermWriter<'a> {
+    /// Create TermWriter
     pub fn new(term: &'a mut Term) -> Self {
         Self {
             term,
@@ -198,15 +218,18 @@ impl<'a> TermWriter<'a> {
         }
     }
 
+    /// Returns true if inner coordinates are out of term
     pub fn is_writable(&self) -> bool {
         self.row < self.term.height
     }
 
+    /// Newline
     pub fn newline(&mut self) {
         self.row += 1;
         self.col = 0;
     }
 
+    /// Returns true if writing the char cause a newline
     pub fn cause_newline(&self, ch: char) -> bool {
         if let Some(w) = ch.width() {
             self.col + w > self.term.width
@@ -215,6 +238,7 @@ impl<'a> TermWriter<'a> {
         }
     }
 
+    /// Write a char
     pub fn write(&mut self, ch: char, style: Style) -> Option<(usize, usize)> {
         if !self.is_writable() {
             return None;
@@ -252,6 +276,7 @@ impl<'a> TermWriter<'a> {
         Some(res)
     }
 
+    /// Write a str
     pub fn write_str(&mut self, s: &str, style: Style) {
         for ch in s.chars() {
             if self.write(ch, style).is_none() {

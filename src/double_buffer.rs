@@ -1,15 +1,20 @@
+//! Double buffering to avoid flickering
+
 use crate::style::{DiffStyle, Style};
 use crate::term::{Term, Tile};
 use std::io;
 use unicode_width::UnicodeWidthChar;
 
 #[derive(Debug, Clone)]
+/// Double buffer
 pub struct DoubleBuffer {
     front: Term,
+    /// A Term for the next
     pub back: Term,
 }
 
 impl DoubleBuffer {
+    /// Create DoubleBuffer with given height and width
     pub fn new(height: usize, width: usize) -> Self {
         Self {
             front: Term::new(height, width),
@@ -17,6 +22,7 @@ impl DoubleBuffer {
         }
     }
 
+    /// Create DoubleBuffer with current terminal size
     pub fn with_terminal_size() -> io::Result<Self> {
         Ok(Self {
             front: Term::with_terminal_size()?,
@@ -24,6 +30,7 @@ impl DoubleBuffer {
         })
     }
 
+    /// Draw a back
     pub fn present<T: io::Write>(&mut self, out: &mut T) -> io::Result<()> {
         if (self.front.height(), self.front.width()) != (self.back.height(), self.back.width()) {
             self.back.draw(out)?;
