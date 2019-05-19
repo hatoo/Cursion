@@ -23,12 +23,16 @@ fn main() {
             }
             if i == j {
                 cursor = w.write('b', Style {
-                    bg: TermColor::Red,
+                    bg: TermColor::Blue,
                     fg: TermColor::White,
-                    decorations: Decorations::default().with(Decoration::Italic),
+                    decorations: Decorations::default().with(Decoration::Bold),
                 });
             } else {
-                w.write('a', Style::default());
+                w.write('a', Style {
+                    bg: TermColor::Red,
+                    fg: TermColor::White,
+                    decorations: Decorations::default().with(Decoration::Invert),
+                });
             }
         }
         double_buffer.back.cursor = cursor.map(|(row, col)| cursion::cursor::Cursor {
@@ -40,4 +44,6 @@ fn main() {
         stdout.flush().unwrap();
         thread::sleep(time::Duration::from_secs(1) / 120);
     }
+
+    write!(stdout, "{}", Style::default()).unwrap();
 }
