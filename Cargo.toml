@@ -3,6 +3,12 @@ name = "cursion"
 version = "0.1.0"
 authors = ["hatoo <hato2000@gmail.com>"]
 edition = "2018"
+description = "Cursor optimization library to avoid flickering in terminal"
+repository = "https://github.com/hatoo/Cursion.git"
+readme = "README.md"
+keywords = ["terminal", "tty", "color", "tui", "curses"]
+categories = ["terminal"]
+license = "MIT"
 
 [dependencies]
 termion = "1"
