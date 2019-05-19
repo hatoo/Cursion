@@ -10,19 +10,17 @@ fn main() {
     for i in 0..240 {
         let mut t = Term::with_terminal_size().unwrap();
         let mut cursor = None;
-        {
-            let mut w = TermWriter::new(&mut t);
-            w.write_str("You may notice flickering", Style::default());
-            w.newline();
-            for j in 0..800 {
-                if j % 40 == 0 {
-                    w.newline();
-                }
-                if i == j {
-                    cursor = w.write('b', Style::default());
-                } else {
-                    w.write('a', Style::default());
-                }
+        let mut w = TermWriter::new(&mut t);
+        w.write_str("You may notice flickering", Style::default());
+        w.newline();
+        for j in 0..800 {
+            if j % 40 == 0 {
+                w.newline();
+            }
+            if i == j {
+                cursor = w.write('b', Style::default());
+            } else {
+                w.write('a', Style::default());
             }
         }
         t.cursor = cursor.map(|(row, col)| cursion::cursor::Cursor {
