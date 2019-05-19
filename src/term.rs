@@ -5,7 +5,7 @@ use std::io;
 use unicode_width::UnicodeWidthChar;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
-pub enum Tile {
+pub(crate) enum Tile {
     Empty,
     Occupied,
     Char(char, Style),
@@ -53,7 +53,7 @@ impl Term {
         self.width
     }
 
-    pub fn buf(&self) -> &[Vec<Tile>] {
+    pub(crate) fn buf(&self) -> &[Vec<Tile>] {
         &self.buf
     }
 
