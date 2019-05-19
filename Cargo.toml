@@ -7,7 +7,6 @@ description = "Cursor optimization library to avoid flickering in terminal"
 repository = "https://github.com/hatoo/Cursion.git"
 readme = "README.md"
 keywords = ["terminal", "tty", "color", "tui", "curses"]
-categories = ["terminal"]
 license = "MIT"
 
 [dependencies]
