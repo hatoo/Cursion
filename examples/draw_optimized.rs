@@ -4,6 +4,8 @@ use cursion::term::TermWriter;
 use std::io::{stdout, Write};
 use std::thread;
 use std::time;
+use cursion::color::TermColor;
+use cursion::decoration::{Decoration, Decorations};
 
 fn main() {
     let mut stdout = stdout();
@@ -20,7 +22,11 @@ fn main() {
                 w.newline();
             }
             if i == j {
-                cursor = w.write('b', Style::default());
+                cursor = w.write('b', Style {
+                    bg: TermColor::Red,
+                    fg: TermColor::White,
+                    decorations: Decorations::default().with(Decoration::Italic),
+                });
             } else {
                 w.write('a', Style::default());
             }
