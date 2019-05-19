@@ -43,7 +43,6 @@ impl fmt::Display for DiffStyle {
         }
 
         if self.from.decorations != self.to.decorations {
-            termion::style::Reset.fmt(f)?;
             self.to.decorations.fmt(f)?;
         }
 

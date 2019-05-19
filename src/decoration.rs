@@ -56,6 +56,7 @@ impl Decorations {
 
 impl fmt::Display for Decorations {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        termion::style::Reset.fmt(f)?;
         for d in self.0.iter() {
             d.fmt(f)?;
         }
